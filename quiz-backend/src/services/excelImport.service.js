@@ -26,11 +26,6 @@ function findHeaderRow(rows) {
   return 0;
 }
 
-/**
- * Parse Excel buffer. Expected columns (case-insensitive):
- * Question | Type | Option1 | Option2 | Option3 | Option4 | CorrectAnswers
- * CorrectAnswers: 1-based indexes, comma-separated for multiple (e.g. "1" or "1,3")
- */
 export function parseQuestionSheet(buffer) {
   const wb = xlsx.read(buffer, { type: "buffer" });
   const sheet = wb.Sheets[wb.SheetNames[0]];

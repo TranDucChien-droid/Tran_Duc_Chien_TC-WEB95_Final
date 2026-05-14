@@ -1,4 +1,7 @@
+import { body } from "express-validator";
+import { requireAuth } from "./auth.middleware.js";
 import { verifyToken } from "../services/jwt.service.js";
+import { handleValidation } from "./validate.middleware.js";
 
 export function requireAuth(req, res, next) {
   const header = req.headers.authorization || "";
@@ -24,4 +27,24 @@ export function requireAdmin(req, res, next) {
     return res.status(403).json({ message: "Admin only" });
   }
   return next();
+}
+
+export function authMeChain() {
+  return [requireAuth];
+}
+
+export function authRegisterChain() {
+  return [
+    body("email").isEmail().normalizeEmail(),
+    body("password").isString().isLength({ min: 6 }),
+    handleValidation,
+  ];
+}
+
+export function authLoginChain() {
+  return [
+    body("email").isEmail().normalizeEmail(),
+    body("password").isString().notEmpty(),
+    handleValidation,
+  ];
 }

@@ -1,32 +1,22 @@
 import { Router } from "express";
-import { body, param } from "express-validator";
 import * as quizController from "../controllers/quiz.controller.js";
-import { requireAdmin, requireAuth } from "../middlewares/auth.middleware.js";
-import { handleValidation } from "../middlewares/validate.middleware.js";
+import {
+  quizAuthenticatedChain,
+  quizCreateChain,
+  quizDeleteChain,
+  quizGetByIdChain,
+  quizUpdateChain,
+} from "../middlewares/quiz.routes.middleware.js";
 
 const router = Router();
 
-router.use(requireAuth);
+router.use(...quizAuthenticatedChain());
 
 router.get("/", quizController.listQuizzes);
-router.get("/:id", [param("id").isMongoId()], handleValidation, quizController.getQuizById);
+router.get("/:id", ...quizGetByIdChain(), quizController.getQuizById);
 
-router.post(
-  "/",
-  requireAdmin,
-  [body("title").isString().trim().notEmpty(), body("description").optional().isString()],
-  handleValidation,
-  quizController.createQuiz
-);
-
-router.patch(
-  "/:id",
-  requireAdmin,
-  [param("id").isMongoId(), body("title").optional().isString().trim().notEmpty(), body("description").optional().isString()],
-  handleValidation,
-  quizController.updateQuiz
-);
-
-router.delete("/:id", requireAdmin, [param("id").isMongoId()], handleValidation, quizController.deleteQuiz);
+router.post("/", ...quizCreateChain(), quizController.createQuiz);
+router.patch("/:id", ...quizUpdateChain(), quizController.updateQuiz);
+router.delete("/:id", ...quizDeleteChain(), quizController.deleteQuiz);
 
 export default router;

@@ -5,10 +5,6 @@ function arraysEqual(a, b) {
   return sa.every((v, i) => v === sb[i]);
 }
 
-/**
- * @param {Array<{ _id: unknown, correctAnswers: number[] }>} questions
- * @param {{ questionId: string, selectedIndexes: number[] }[]} answers
- */
 export function scoreAttempt(questions, answers) {
   const byId = new Map(questions.map((q) => [String(q._id), q]));
   let correct = 0;
