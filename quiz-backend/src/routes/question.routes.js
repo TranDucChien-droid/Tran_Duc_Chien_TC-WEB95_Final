@@ -6,7 +6,7 @@ import {
   questionDeleteChain,
   questionImportExcelChain,
   questionUpdateChain,
-} from "../middlewares/question.routes.middleware.js";
+} from "../middlewares/question.middleware.js";
 
 const router = Router();
 

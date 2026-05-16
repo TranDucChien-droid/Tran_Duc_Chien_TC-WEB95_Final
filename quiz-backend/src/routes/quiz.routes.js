@@ -6,7 +6,7 @@ import {
   quizDeleteChain,
   quizGetByIdChain,
   quizUpdateChain,
-} from "../middlewares/quiz.routes.middleware.js";
+} from "../middlewares/quiz.middleware.js";
 
 const router = Router();
 

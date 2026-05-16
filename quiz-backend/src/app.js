@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
 import authRoutes from "./routes/auth.routes.js";
 import quizRoutes from "./routes/quiz.routes.js";
 import questionRoutes from "./routes/question.routes.js";
 import attemptRoutes from "./routes/attempt.routes.js";
+import { swaggerSpec } from "./config/swagger.js";
 
 export function createApp() {
   const app = express();
@@ -14,6 +16,9 @@ export function createApp() {
     })
   );
   app.use(express.json({ limit: "1mb" }));
+
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get("/api-docs.json", (_req, res) => res.json(swaggerSpec));
 
   app.get("/health", (_req, res) => res.json({ ok: true }));
 

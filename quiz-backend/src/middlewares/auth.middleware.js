@@ -1,5 +1,4 @@
 import { body } from "express-validator";
-import { requireAuth } from "./auth.middleware.js";
 import { verifyToken } from "../services/jwt.service.js";
 import { handleValidation } from "./validate.middleware.js";
 
